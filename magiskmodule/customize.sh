@@ -59,10 +59,10 @@ fi
 rm "$MODPATH"/ViperIRS.zip 2>/dev/null
 
 ui_print "- Patching system audio files"
-AUDIO_EFFECTS_FILES="$(find /system /vendor -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml")"
+AUDIO_EFFECTS_FILES="$(find /system /vendor /odm -type f -name "*audio_effects*.conf" -o -name "*audio_effects*.xml")"
 for ORIGINAL_FILE in $AUDIO_EFFECTS_FILES; do
   ui_print "    Patching $ORIGINAL_FILE"
-  FILE="$MODPATH$(echo "$ORIGINAL_FILE" | sed "s|^/vendor|/system/vendor|g")"
+  FILE="$MODPATH$(echo "$ORIGINAL_FILE" | sed -e 's|^/vendor|/system/vendor|g' -e 's|^/odm|/system/odm|g')"
   mkdir -p "$(dirname $FILE)"
   cp "$ORIGINAL_FILE" "$FILE"
   case "$FILE" in
